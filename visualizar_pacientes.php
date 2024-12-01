@@ -65,7 +65,7 @@ $pacientes = $conn->query($query_pacientes);
                 <?php if ($_SESSION['nivel_acesso'] != 'aluno') { ?>
                     <th>Aluno Responsável</th>
                     <th>Turma</th>
-                    <th>Professor Responsável</th>
+                    <!-- <th>Professor Responsável</th> -->
                 <?php } ?>
             </tr>
         </thead>
@@ -92,7 +92,7 @@ $pacientes = $conn->query($query_pacientes);
                 <?php if ($_SESSION['nivel_acesso'] != 'aluno') { ?>
                     <td><?php echo $paciente['aluno_responsavel']; ?></td>
                     <td><?php echo $paciente['turma_nome'] ?? 'Sem Turma'; ?></td>
-                    <td><?php echo $paciente['professor_responsavel'] ?? 'Sem Professor'; ?></td>
+                    <!-- <td><?php echo $paciente['professor_responsavel'] ?? 'Sem Professor'; ?></td> -->
                 <?php } ?>
             </tr>
             <?php } ?>

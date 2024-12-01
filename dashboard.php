@@ -6,8 +6,7 @@ if (!isset($_SESSION['id_usuario'])) {
     header('Location: index.php');
     exit;
 }
-//$pageTitle = 'Detalhes do Paciente'; // Define o título da página
-//include 'includes/header.php';
+
 $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8');
 ?>
 
@@ -47,6 +46,7 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
             <?php if ($nivel_acesso == 'admin') { ?>
                 <a href="adicionar_turma.php">Gerenciar Turmas</a>
                 <a href="cadastrar_usuario.php">Gerenciar Usuários</a>
+                <a href="visualizar_alunos.php">Visualizar Alunos</a>
             <?php } ?>
 
             <!-- Links para Admin e Professor -->
@@ -54,6 +54,7 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
                 <a href="cadastrar_paciente.php">Cadastrar Pacientes</a>
                 <a href="visualizar_pacientes.php">Visualizar Pacientes</a>
                 <a href="minhas_turmas.php">Minhas Turmas</a>
+                <a href="visualizar_alunos.php">Visualizar Alunos</a>
             <?php } ?>
 
             <!-- Links para Aluno -->
