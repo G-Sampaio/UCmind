@@ -42,19 +42,24 @@ $result_consultas = $conn->query($query_consultas);
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Paciente</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .container {
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        .container {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        h1, h2 {
+            color: #0056b3;
         }
         .details p {
             margin: 8px 0;
@@ -62,37 +67,34 @@ $result_consultas = $conn->query($query_consultas);
         .details strong {
             font-weight: bold;
         }
-        .print-btn {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .print-btn:hover {
-            background: #45a049;
+        .btn {
+            margin: 10px 5px;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
             margin-top: 20px;
         }
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
         table th {
-            background-color: #f4f4f4;
+            background-color: #0056b3;
+            color: white;
+        }
+        table td, table th {
+            border: 1px solid #dee2e6;
+        }
+        @media print {
+            .btn {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Detalhes do Paciente</h1>
+        <h1 class="text-center">Detalhes do Paciente</h1>
         <div class="details">
             <p><strong>Nome:</strong> <?php echo $paciente['nome']; ?></p>
             <p><strong>Data de Nascimento:</strong> <?php echo $paciente['data_nascimento']; ?></p>
@@ -114,30 +116,38 @@ $result_consultas = $conn->query($query_consultas);
 
         <h2>Consultas</h2>
         <?php if ($result_consultas->num_rows > 0) { ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Data e Hora</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($consulta = $result_consultas->fetch_assoc()) { ?>
-                    <tr>
-                        <td><?php echo $consulta['id_consulta']; ?></td>
-                        <td><?php echo $consulta['data_consulta']; ?></td>
-                        <td><?php echo $consulta['descricao']; ?></td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Data e Hora</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($consulta = $result_consultas->fetch_assoc()) { ?>
+                        <tr>
+                            <td class="text-center"><?php echo $consulta['id_consulta']; ?></td>
+                            <td><?php echo $consulta['data_consulta']; ?></td>
+                            <td><?php echo $consulta['descricao']; ?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         <?php } else { ?>
-            <p>Nenhuma consulta encontrada para este paciente.</p>
+            <p class="text-center">Nenhuma consulta encontrada para este paciente.</p>
         <?php } ?>
 
-        <button class="print-btn" onclick="window.print()">Imprimir</button>
-        <a href="visualizar_pacientes.php" class="print-btn">Voltar</a>
+        <div class="text-center">
+            <button class="btn btn-primary" onclick="window.print()">Imprimir</button>
+            <a href="visualizar_consultas.php" class="btn btn-secondary">Voltar</a>
+        </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

@@ -156,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php } ?>
 
         <button type="submit">Cadastrar Paciente</button>
+        <a href="dashboard.php" class="btn-dashboard">Voltar para o Dashboard</a>
     </form>
 </body>
 </html>

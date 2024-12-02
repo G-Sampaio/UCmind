@@ -26,7 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $query_professor_aluno = "UPDATE usuarios SET id_professor = '$id_professor' WHERE id_usuario = '$id_aluno'";
             $conn->query($query_professor_aluno);
         }
+<<<<<<< Updated upstream
         echo "Usuário cadastrado com sucesso!";
+=======
+
+        // Associar o aluno ao professor
+        if ($nivel_acesso === 'aluno' && $id_professor) {
+            $query_associar_professor = "UPDATE usuarios SET id_professor = '$id_professor' WHERE id_usuario = '$novo_id'";
+            $conn->query($query_associar_professor);
+        }
+
+        echo "";
+>>>>>>> Stashed changes
     } else {
         echo "Erro ao cadastrar usuário: " . $conn->error;
     }
@@ -51,13 +62,166 @@ $usuarios = $conn->query("
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Usuários</title>
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="css/styles.css">
+=======
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #00509e;
+        }
+
+        .form-cadastro label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #00509e;
+        }
+
+        .form-cadastro input, 
+        .form-cadastro select, 
+        .form-cadastro button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #d9d9d9;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-cadastro input:focus, 
+        .form-cadastro select:focus {
+            border-color: #00509e;
+            outline: none;
+        }
+
+        .form-cadastro button {
+            background-color: #00509e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-cadastro button:hover {
+            background-color: #003f7e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background-color: #00509e;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #e0f0ff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            table, th, td {
+                font-size: 14px;
+            }
+
+            .form-cadastro input, 
+            .form-cadastro select, 
+            .form-cadastro button {
+                font-size: 14px;
+            }
+        }
+        .btn-dashboard {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .btn-dashboard:hover {
+            background-color: #003f88;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function atualizarProfessoresPorTurma(turmaId) {
+            const professorField = document.getElementById('id_professor');
+            professorField.innerHTML = '<option value="">-- Escolha um Professor --</option>';
+
+            if (turmaId) {
+                fetch(`fetch_professor_por_turma.php?id_turma=${turmaId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length) {
+                            const professor = data[0];
+                            const option = document.createElement('option');
+                            option.value = professor.id_usuario;
+                            option.textContent = professor.nome;
+                            professorField.appendChild(option);
+                        } else {
+                            alert('Nenhum professor associado a esta turma.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar professor:', error));
+            }
+        }
+
+        function atualizarCamposNivelAcesso() {
+            const nivelAcesso = document.getElementById('nivel_acesso').value;
+            const turmaField = document.getElementById('turma-field');
+            const professorField = document.getElementById('professor-field');
+
+            turmaField.style.display = nivelAcesso === 'professor' || nivelAcesso === 'aluno' ? 'block' : 'none';
+            professorField.style.display = nivelAcesso === 'aluno' ? 'block' : 'none';
+        }
+    </script>
+>>>>>>> Stashed changes
 </head>
 <body>
     <div class="container">
         <h1>Cadastrar Usuários</h1>
+<<<<<<< Updated upstream
 
         <!-- Formulário para Cadastrar Usuários -->
+=======
+>>>>>>> Stashed changes
         <form method="POST" class="form-cadastro">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome" required placeholder="Digite o nome completo">
@@ -76,7 +240,6 @@ $usuarios = $conn->query("
                 <option value="admin">Administrador</option>
             </select>
 
-            <!-- Seleção de Turma -->
             <div id="turma-field" style="display: none;">
                 <label for="id_turma">Selecione a Turma:</label>
                 <select name="id_turma" id="id_turma">
@@ -87,7 +250,6 @@ $usuarios = $conn->query("
                 </select>
             </div>
 
-            <!-- Seleção de Professor -->
             <div id="professor-field" style="display: none;">
                 <label for="id_professor">Selecione o Professor:</label>
                 <select name="id_professor" id="id_professor">
@@ -99,11 +261,15 @@ $usuarios = $conn->query("
             </div>
 
             <button type="submit" class="btn">Cadastrar</button>
+            <a href="dashboard.php" class="btn-dashboard">Voltar para o Dashboard</a>
         </form>
 
         <hr>
+<<<<<<< Updated upstream
 
         <!-- Listagem de Usuários -->
+=======
+>>>>>>> Stashed changes
         <h2>Usuários Cadastrados</h2>
         <table class="table-usuarios">
             <thead>
@@ -149,3 +315,4 @@ $usuarios = $conn->query("
     </script>
 </body>
 </html>
+

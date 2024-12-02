@@ -90,6 +90,7 @@ if ($_SESSION['nivel_acesso'] == 'admin') {
                 </div>
 
                 <button type="submit" class="btn-submit">Cadastrar Consulta</button>
+                <a href="dashboard.php" class="btn-dashboard">Voltar</a>
             </form>
         </main>
     </div>
