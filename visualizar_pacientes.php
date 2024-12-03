@@ -91,62 +91,7 @@ $pacientes = $conn->query($query_pacientes);
     </style>
 </head>
 <body>
-<<<<<<< Updated upstream
-    <h1>Visualizar Pacientes</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Data de Nascimento</th>
-                <th>Gênero</th>
-                <th>Endereço</th>
-                <th>Telefone</th>
-                <th>E-mail</th>
-                <th>Cidade</th>
-                <th>Estado</th>
-                <th>Data de Início</th>
-                <th>Contato Emergência</th>
-                <th>Escolaridade</th>
-                <th>Ocupação</th>
-                <th>Necessidades Especiais</th>
-                <th>Histórico Familiar</th>
-                <th>Histórico Social</th>
-                <th>Observações</th>
-                <?php if ($_SESSION['nivel_acesso'] != 'aluno') { ?>
-                    <th>Aluno Responsável</th>
-                    <th>Turma</th>
-                    <th>Professor Responsável</th>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($paciente = $pacientes->fetch_assoc()) { ?>
-            <tr>
-                <td><?php echo $paciente['id_paciente']; ?></td>
-                <td><?php echo $paciente['nome']; ?></td>
-                <td><?php echo $paciente['data_nascimento']; ?></td>
-                <td><?php echo $paciente['genero']; ?></td>
-                <td><?php echo $paciente['endereco']; ?></td>
-                <td><?php echo $paciente['telefone']; ?></td>
-                <td><?php echo $paciente['email']; ?></td>
-                <td><?php echo $paciente['cidade']; ?></td>
-                <td><?php echo $paciente['estado']; ?></td>
-                <td><?php echo $paciente['data_inicio']; ?></td>
-                <td><?php echo $paciente['contato_emergencia']; ?></td>
-                <td><?php echo $paciente['escolaridade']; ?></td>
-                <td><?php echo $paciente['ocupacao']; ?></td>
-                <td><?php echo $paciente['necessidade_especial']; ?></td>
-                <td><?php echo $paciente['hist_familiar']; ?></td>
-                <td><?php echo $paciente['hist_social']; ?></td>
-                <td><?php echo $paciente['finais']; ?></td>
-                <?php if ($_SESSION['nivel_acesso'] != 'aluno') { ?>
-                    <td><?php echo $paciente['aluno_responsavel']; ?></td>
-                    <td><?php echo $paciente['turma_nome'] ?? 'Sem Turma'; ?></td>
-                    <td><?php echo $paciente['professor_responsavel'] ?? 'Sem Professor'; ?></td>
-                <?php } ?>
-            </tr>
-=======
+
     <div class="container my-5">
         <h1 class="text-center">Visualizar Pacientes</h1>
         
@@ -161,7 +106,6 @@ $pacientes = $conn->query($query_pacientes);
                         <option value="<?php echo $turma['nome']; ?>"><?php echo $turma['nome']; ?></option>
                     <?php } ?>
                 </select>
->>>>>>> Stashed changes
             <?php } ?>
             <button class="btn btn-primary" onclick="applyFilters()">Filtrar</button>
         </div>
@@ -196,7 +140,9 @@ $pacientes = $conn->query($query_pacientes);
                             <td><?php echo $paciente['turma_nome'] ?? 'Sem Turma'; ?></td>
                         <?php } ?>
                         <td>
-                            <button class="btn btn-primary btn-sm">Detalhes</button>
+                            <a href="editar_paciente.php?id_paciente=<?php echo $paciente['id_paciente']; ?>" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
                         </td>
                     </tr>
                     <?php } ?>

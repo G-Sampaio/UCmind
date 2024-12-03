@@ -24,116 +24,54 @@ $turmas = $conn->query($query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Turmas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        h1 {
-            text-align: center;
-            padding: 20px;
-            color: #0056b3;
-        }
-
-        table {
-            width: 90%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        table th,
-        table td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #0056b3;
-            color: white;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        table td {
-            text-align: center;
-        }
-
-        table tr:hover {
-            background-color: #e9f5ff;
-        }
-
-        table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .btn-back {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #0056b3;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            width: fit-content;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-back:hover {
-            background-color: #003f88;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                width: 100%;
-                font-size: 14px;
-            }
-
-            table th,
-            table td {
-                padding: 10px;
-            }
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Minhas Turmas</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Nome da Turma</th>
-                <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
-                    <th>Professor</th>
-                <?php } ?>
-                <th>Data de Criação</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($turma = $turmas->fetch_assoc()) { ?>
-                <tr>
-                    <td><?php echo $turma['nome']; ?></td>
-                    <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
-                        <td><?php echo $turma['professor']; ?></td>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center text-primary">Minhas Turmas</h1>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Nome da Turma</th>
+                        <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
+                            <th scope="col">Professor</th>
+                        <?php } ?>
+                        <th scope="col">Data de Criação</th>
+                        <?php if ($_SESSION['nivel_acesso'] != 'admin') { ?>
+                            <th scope="col">Ações</th>
+                        <?php } ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($turma = $turmas->fetch_assoc()) { ?>
+                        <tr>
+                            <td><?php echo $turma['nome']; ?></td>
+                            <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
+                                <td><?php echo $turma['professor']; ?></td>
+                            <?php } ?>
+                            <td><?php echo date("d/m/Y", strtotime($turma['data_criacao'])); ?></td>
+                            <?php if ($_SESSION['nivel_acesso'] != 'admin') { ?>
+                                <td>
+                                    <a href="alunos_da_turma.php?id_turma=<?php echo $turma['id_turma']; ?>" 
+                                       class="btn btn-sm btn-outline-primary">
+                                       Ver Alunos
+                                    </a>
+                                </td>
+                            <?php } ?>
+                        </tr>
                     <?php } ?>
-                    <td><?php echo $turma['data_criacao']; ?></td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <a href="dashboard.php" class="btn btn-primary">Voltar para o Dashboard</a>
+        </div>
+    </div>
 
-    <a href="dashboard.php" class="btn-back">Voltar para o Dashboard</a>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

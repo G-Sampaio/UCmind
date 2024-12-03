@@ -30,88 +30,50 @@ if ($_SESSION['nivel_acesso'] == 'admin') {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Turmas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        h1 {
-            text-align: center;
-            padding: 20px;
-            color: #444;
-        }
-
-        table {
-            width: 90%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background: #fff;
-        }
-
-        table th,
-        table td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #5cb85c;
-            color: white;
-            font-weight: 700;
-        }
-
-        table tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        table tr:last-child td {
-            border-bottom: none;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                width: 100%;
-                font-size: 14px;
-            }
-
-            table th,
-            table td {
-                padding: 10px;
-            }
-        }
-    </style>
+    <title>Gestão de Turmas</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Minhas Turmas</h1>
+    <h1>Gestão de Turmas</h1>
+    
+    <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
+    <!-- Formulário para criar novas turmas -->
+    <form method="POST">
+        <input type="text" name="nome_turma" placeholder="Nome da Turma" required>
+        <select name="id_professor" required>
+            <?php
+            // Listar todos os professores
+            $professores = $conn->query("SELECT id_usuario, nome FROM usuarios WHERE nivel_acesso = 'professor'");
+            while ($professor = $professores->fetch_assoc()) {
+                echo "<option value='" . $professor['id_usuario'] . "'>" . $professor['nome'] . "</option>";
+            }
+            ?>
+        </select>
+        <button type="submit">Criar Turma</button>
+    </form>
+    <?php } ?>
+
+    <!-- Listar as turmas -->
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nome da Turma</th>
-                <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
-                    <th>Professor</th>
-                <?php } ?>
+                <th>Professor</th>
                 <th>Data de Criação</th>
             </tr>
         </thead>
         <tbody>
             <?php while ($turma = $turmas->fetch_assoc()) { ?>
-                <tr>
-                    <td><?php echo $turma['nome']; ?></td>
-                    <?php if ($_SESSION['nivel_acesso'] == 'admin') { ?>
-                        <td><?php echo $turma['professor']; ?></td>
-                    <?php } ?>
-                    <td><?php echo $turma['data_criacao']; ?></td>
-                </tr>
+            <tr>
+                <td><?php echo $turma['id_turma']; ?></td>
+                <td><?php echo $turma['nome']; ?></td>
+                <td><?php 
+                    $professor = $conn->query("SELECT nome FROM usuarios WHERE id_usuario = " . $turma['id_professor']);
+                    echo $professor->fetch_assoc()['nome']; 
+                ?></td>
+                <td><?php echo $turma['data_criacao']; ?></td>
+            </tr>
             <?php } ?>
         </tbody>
     </table>

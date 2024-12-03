@@ -1,20 +1,16 @@
 <?php
 include 'includes/db.php';
 session_start();
- 
+
 if (!isset($_SESSION['id_usuario'])) {
     header('Location: index.php');
     exit;
 }
-<<<<<<< Updated upstream
-//$pageTitle = 'Detalhes do Paciente'; // Define o título da página
-//include 'includes/header.php';
-=======
- 
->>>>>>> Stashed changes
-$nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8');
-?>
 
+// Define o nível de acesso e o nome do usuário
+$nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8');
+$nome_usuario = isset($_SESSION['nome_usuario']) ? htmlspecialchars($_SESSION['nome_usuario'], ENT_QUOTES, 'UTF-8') : 'Usuário'; // Nome padrão
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -59,18 +55,28 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
             padding: 10px 0;
         }
 
-        nav a {
-            display: block;
+        nav a, .nav-user {
+            display: inline-block;
             padding: 15px 20px;
-            float: left;
             text-decoration: none;
             color: #e0e0e0;
             font-weight: 500;
             transition: background 0.3s;
         }
 
-        nav a:hover {
+        nav a:hover, .nav-user:hover {
             background-color: #333;
+        }
+
+        .nav-user {
+            float: right;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-user i {
+            margin-right: 10px;
         }
 
         .content {
@@ -118,11 +124,12 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333; /* Texto mais visível */
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
-            nav a {
+            nav a, .nav-user {
                 float: none;
                 text-align: center;
             }
@@ -132,34 +139,6 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
 <body>
     <header>
         <h1>Bem-vindo ao UCMind</h1>
-<<<<<<< Updated upstream
-        <nav>
-            <!-- Links para Admin -->
-            <?php if ($nivel_acesso == 'admin') { ?>
-                <a href="adicionar_turma.php">Gerenciar Turmas</a>
-                <a href="cadastrar_usuario.php">Gerenciar Usuários</a>
-            <?php } ?>
-
-            <!-- Links para Admin e Professor -->
-            <?php if ($nivel_acesso == 'admin' || $nivel_acesso == 'professor') { ?>
-                <a href="cadastrar_paciente.php">Cadastrar Pacientes</a>
-                <a href="visualizar_pacientes.php">Visualizar Pacientes</a>
-                <a href="minhas_turmas.php">Minhas Turmas</a>
-            <?php } ?>
-
-            <!-- Links para Aluno -->
-            <?php if ($nivel_acesso == 'aluno') { ?>
-                <a href="cadastrar_paciente.php">Cadastrar Pacientes</a>
-                <a href="visualizar_pacientes.php">Meus Pacientes</a>
-            <?php } ?>
-
-            <!-- Links para Todos -->
-            <a href="cadastrar_consulta.php">Cadastrar Consulta</a>
-            <a href="visualizar_consultas.php">Visualizar Consultas</a>
-            <a href="logout.php">Sair</a>
-        </nav>
-=======
->>>>>>> Stashed changes
     </header>
 
     <nav>
@@ -187,16 +166,15 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
         <a href="cadastrar_consulta.php"><i class="fas fa-calendar-plus"></i> Cadastrar Consulta</a>
         <a href="visualizar_consultas.php"><i class="fas fa-calendar-alt"></i> Visualizar Consultas</a>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Sair</a>
+
+        <!-- Ícone de Usuário -->
+        <a class="nav-user" href="configuracao_conta.php">
+            <i class="fas fa-user-circle"></i> <?php echo $nome_usuario; ?>
+        </a>
     </nav>
 
-    <!-- <div class="content">
-        <p>Escolha uma opção no menu acima para começar.</p>
-        <a href="visualizar_pacientes.php" class="btn"><i class="fas fa-notes-medical"></i> Ver Pacientes</a>
-        <a href="visualizar_consultas.php" class="btn"><i class="fas fa-calendar-alt"></i> Ver Consultas</a>
-    </div> -->
-
     <div id="calendar"></div>
-
+    <br>
     <footer>
         <p>&copy; <?php echo date('Y'); ?> UCMind - Todos os direitos reservados.</p>
     </footer>
@@ -224,8 +202,4 @@ $nivel_acesso = htmlspecialchars($_SESSION['nivel_acesso'], ENT_QUOTES, 'UTF-8')
     </script>
 </body>
 </html>
-<<<<<<< Updated upstream
 <?php include 'includes/footer.php'; ?>
-=======
-
->>>>>>> Stashed changes

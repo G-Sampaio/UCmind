@@ -14,34 +14,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $senha = md5($_POST['senha']);
     $nivel_acesso = $_POST['nivel_acesso'];
     $id_turma = $_POST['id_turma'] ?? null; // Apenas para professor e aluno
-    $id_professor = $_POST['id_professor'] ?? null; // Apenas para aluno
 
     // Inserção no banco de dados
     $query = "INSERT INTO usuarios (nome, email, senha, nivel_acesso, id_turma) 
               VALUES ('$nome', '$email', '$senha', '$nivel_acesso', " . ($id_turma ? "'$id_turma'" : "NULL") . ")";
     if ($conn->query($query)) {
-        // Para alunos, associar ao professor
-        if ($nivel_acesso == 'aluno' && $id_professor) {
-            $id_aluno = $conn->insert_id; // Último ID inserido
-            $query_professor_aluno = "UPDATE usuarios SET id_professor = '$id_professor' WHERE id_usuario = '$id_aluno'";
-            $conn->query($query_professor_aluno);
-        }
-<<<<<<< Updated upstream
-        echo "Usuário cadastrado com sucesso!";
-=======
+        // Obtém o ID do último usuário inserido
+        $id_usuario = $conn->insert_id;
 
-        // Associar o aluno ao professor
-        if ($nivel_acesso === 'aluno' && $id_professor) {
-            $query_associar_professor = "UPDATE usuarios SET id_professor = '$id_professor' WHERE id_usuario = '$novo_id'";
-            $conn->query($query_associar_professor);
+        // Se o usuário for um professor, atualiza a tabela `turmas`
+        if ($nivel_acesso === 'professor' && $id_turma) {
+            $query_update_turma = "UPDATE turmas SET id_professor = '$id_usuario' WHERE id_turma = '$id_turma'";
+            if (!$conn->query($query_update_turma)) {
+                echo "Erro ao atualizar a turma: " . $conn->error;
+            }
+        }
+
+        // Para alunos, associar ao professor
+        if ($nivel_acesso === 'aluno') {
+            $id_professor = $_POST['id_professor'] ?? null;
+            if ($id_professor) {
+                $query_associar_professor = "UPDATE usuarios SET id_professor = '$id_professor' WHERE id_usuario = '$id_usuario'";
+                if (!$conn->query($query_associar_professor)) {
+                    echo "Erro ao associar o professor ao aluno: " . $conn->error;
+                }
+            }
         }
 
         echo "";
->>>>>>> Stashed changes
     } else {
         echo "Erro ao cadastrar usuário: " . $conn->error;
     }
 }
+
 
 // Obter turmas para selecionar
 $turmas = $conn->query("SELECT id_turma, nome FROM turmas");
@@ -62,9 +67,7 @@ $usuarios = $conn->query("
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Usuários</title>
-<<<<<<< Updated upstream
-    <link rel="stylesheet" href="css/styles.css">
-=======
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
@@ -212,16 +215,11 @@ $usuarios = $conn->query("
             professorField.style.display = nivelAcesso === 'aluno' ? 'block' : 'none';
         }
     </script>
->>>>>>> Stashed changes
 </head>
 <body>
     <div class="container">
         <h1>Cadastrar Usuários</h1>
-<<<<<<< Updated upstream
 
-        <!-- Formulário para Cadastrar Usuários -->
-=======
->>>>>>> Stashed changes
         <form method="POST" class="form-cadastro">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome" required placeholder="Digite o nome completo">
@@ -265,11 +263,7 @@ $usuarios = $conn->query("
         </form>
 
         <hr>
-<<<<<<< Updated upstream
 
-        <!-- Listagem de Usuários -->
-=======
->>>>>>> Stashed changes
         <h2>Usuários Cadastrados</h2>
         <table class="table-usuarios">
             <thead>
